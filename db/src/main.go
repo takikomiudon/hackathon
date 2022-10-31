@@ -29,6 +29,7 @@ func init() {
 		log.Fatalf("fail: _db.Ping, %v\n", err)
 	}
 	db = _db
+	return
 }
 
 func main() {
