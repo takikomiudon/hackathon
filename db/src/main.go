@@ -29,10 +29,10 @@ func init() {
 		log.Fatalf("fail: _db.Ping, %v\n", err)
 	}
 	db = _db
-	return
 }
 
 func main() {
+	return
 	http.HandleFunc("/ptrank", mypkg.Ptrank)
 	http.HandleFunc("/mycontribution", mypkg.Mycontribution)
 	http.HandleFunc("/mycontributed", mypkg.Mycontributed)
