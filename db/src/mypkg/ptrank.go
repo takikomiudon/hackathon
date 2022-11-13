@@ -58,7 +58,7 @@ func Ptrank(w http.ResponseWriter, r *http.Request) {
 			if err := rows.Scan(&u.Name, &u.Point); err != nil {
 				log.Printf("fail: rows.Scan, %v\n", err)
 
-				if err := rows.Close(); err != nil { // 500を返して終了するが、その前にrowsのClose処理が必要
+				if err := rows.Close(); err != nil { 
 					log.Printf("fail: rows.Close(), %v\n", err)
 				}
 				w.WriteHeader(http.StatusInternalServerError)
