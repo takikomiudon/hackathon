@@ -74,7 +74,6 @@ func Contributionupdate(w http.ResponseWriter, r *http.Request) {
 
 		_, err = db.Exec("UPDATE contribution_list SET contributorid=?, point=?, message=? WHERE id=?", contributorId, strconv.Itoa(point), message, id)
 		if err != nil {
-			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

@@ -55,9 +55,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer db.Close()
-		_, err = db.Exec("INSERT INTO name_list (nameid, name) VALUES(?, ?)", nameid.String(), name)
+
+		_, err = db.Exec("INSERT INTO name_list (nameid, name, deleted_at) VALUES(?, ?, false)", nameid.String(), name)
 		if err != nil {
-			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

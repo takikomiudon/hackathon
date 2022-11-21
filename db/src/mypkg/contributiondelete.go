@@ -48,7 +48,6 @@ func Contributiondelete(w http.ResponseWriter, r *http.Request) {
 		keyVal1 := make(map[string]string)
 		json.Unmarshal(body, &keyVal1)
 		id := keyVal1["id"]
-		log.Println(id)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -69,7 +68,6 @@ func Contributiondelete(w http.ResponseWriter, r *http.Request) {
 		defer db.Close()
 		_, err = db.Exec("DELETE FROM contribution_list WHERE id=?", id)
 		if err != nil {
-			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

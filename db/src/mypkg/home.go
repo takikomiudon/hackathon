@@ -8,13 +8,7 @@ import (
 	"net/url"
 )
 
-type ContributionResForHTTPGet struct {
-	Contributor string
-	Point       int
-	Message     string
-}
-
-func Mycontribution(w http.ResponseWriter, r *http.Request) {
+func Home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
@@ -32,16 +26,15 @@ func Mycontribution(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		rows, err := db.Query("SELECT name, point, message FROM contribution_list JOIN name_list ON contribution_list.nameid = name_list.nameid WHERE contributorid=?;", nameid)
+		rows, err := db.Query("SELECT CONCAT(IFNULL(starttitle,''),' ',name,' ',IFNULL(endtitle,'')) AS titlename FROM (SELECT name, SUM(point) AS point FROM name_list JOIN contribution_list ON name_list.nameid=contribution_list.contributorid WHERE name_list.nameid=? GROUP BY contributorid) list JOIN starttitle_list ON list.point >= starttitle_list.point AND list.point < starttitle_list.point+100 JOIN endtitle_list ON list.point >= endtitle_list.point AND list.point < endtitle_list.point+100;", nameid)
 		if err != nil {
 			log.Printf("fail: db.Query, %v\n", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		contribution := make([]ContributionResForHTTPGet, 0)
+		var user string
 		for rows.Next() {
-			var u ContributionResForHTTPGet
-			if err := rows.Scan(&u.Contributor, &u.Point, &u.Message); err != nil {
+			if err := rows.Scan(&user); err != nil {
 				log.Printf("fail: rows.Scan, %v\n", err)
 				if err := rows.Close(); err != nil { // 500を返して終了するが、その前にrowsのClose処理が必要
 					log.Printf("fail: rows.Close(), %v\n", err)
@@ -49,9 +42,27 @@ func Mycontribution(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
-			contribution = append(contribution, u)
 		}
-		bytes, err := json.Marshal(contribution)
+		if user == "" {
+			rows, err := db.Query("SELECT name FROM name_list WHERE nameid=?;", nameid)
+			if err != nil {
+				log.Printf("fail: db.Query, %v\n", err)
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+			for rows.Next() {
+				if err := rows.Scan(&user); err != nil {
+					log.Printf("fail: rows.Scan, %v\n", err)
+					if err := rows.Close(); err != nil { // 500を返して終了するが、その前にrowsのClose処理が必要
+						log.Printf("fail: rows.Close(), %v\n", err)
+					}
+					w.WriteHeader(http.StatusInternalServerError)
+					return
+				}
+			}
+			user = user + "さん"
+		}
+		bytes, err := json.Marshal(user)
 		if err != nil {
 			log.Printf("fail: json.Marshal, %v\n", err)
 			w.WriteHeader(http.StatusInternalServerError)

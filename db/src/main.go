@@ -32,7 +32,11 @@ func init() {
 }
 
 func main() {
-	http.HandleFunc("/pointranking", mypkg.Ptrank)
+	http.HandleFunc("/alltimeranking", mypkg.Alltimerank)
+	http.HandleFunc("/annualranking", mypkg.Annualrank)
+	http.HandleFunc("/monthlyranking", mypkg.Monthlyrank)
+	http.HandleFunc("/weeklyranking", mypkg.Weeklyrank)
+	http.HandleFunc("/dailyranking", mypkg.Dailyrank)
 	http.HandleFunc("/mycontribution", mypkg.Mycontribution)
 	http.HandleFunc("/mycontributed", mypkg.Mycontributed)
 	http.HandleFunc("/register", mypkg.Register)
@@ -40,11 +44,15 @@ func main() {
 	http.HandleFunc("/contributionpost", mypkg.Contributionpost)
 	http.HandleFunc("/contributiondelete", mypkg.Contributiondelete)
 	http.HandleFunc("/contributionupdate", mypkg.Contributionupdate)
+	http.HandleFunc("/home", mypkg.Home)
+	http.HandleFunc("/userdelete", mypkg.Userdelete)
+	http.HandleFunc("/userupdate", mypkg.Userupdate)
+	http.HandleFunc("/allcontribution", mypkg.Allcontribution)
 
 	closeDBWithSysCall()
 
 	log.Println("Listening...")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal(err)
 	}
 }

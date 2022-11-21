@@ -75,13 +75,17 @@ func Contributionpost(w http.ResponseWriter, r *http.Request) {
 		}
 		defer db.Close()
 
-		t := time.Now()
+		jst, err := time.LoadLocation("Asia/Tokyo")
+		if err != nil {
+			panic(err)
+		}
+
+		t := time.Now().In(jst)
 		entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 		var id = ulid.MustNew(ulid.Timestamp(t), entropy)
 
 		_, err = db.Exec("INSERT INTO contribution_list (id, nameid, contributorid, point, message, time) VALUES(?, ?, ?, ?, ?, ?)", id.String(), nameid, contributorId, strconv.Itoa(point), message, t)
 		if err != nil {
-			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
