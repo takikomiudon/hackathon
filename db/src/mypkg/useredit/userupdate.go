@@ -43,6 +43,7 @@ func Userupdate(w http.ResponseWriter, r *http.Request) {
 
 	case http.MethodPost:
 		body, err := io.ReadAll(r.Body)
+		log.Println(body)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
