@@ -46,6 +46,7 @@ func Userupdate(w http.ResponseWriter, r *http.Request) {
 		log.Println(body)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			log.Println(err)
 			return
 		}
 		keyVal1 := make(map[string]string)
