@@ -31,6 +31,7 @@ func init() {
 	}
 
 	if err := _db.Ping(); err != nil {
+		log.Println(mysqlUser, mysqlUserPwd, mysqlHost, mysqlDatabase)
 		log.Fatalf("fail: _db.Ping, %v\n", err)
 	}
 	db = _db
