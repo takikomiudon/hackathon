@@ -1,13 +1,11 @@
 package contributionedit
 
 import (
-	"database/sql"
 	"encoding/json"
 	_ "github.com/go-sql-driver/mysql"
 	"io"
 	"log"
 	"net/http"
-	"os"
 )
 
 func Contributiondelete(w http.ResponseWriter, r *http.Request) {
@@ -36,17 +34,17 @@ func Contributiondelete(w http.ResponseWriter, r *http.Request) {
 
 		//TODO pointの制約
 
-		godotenv.Load(".env")
-		mysqlUser := os.Getenv("mysqlUser")
-		mysqlUserPwd := os.Getenv("mysqlUserPwd")
-		mysqlDatabase := os.Getenv("mysqlDatabase")
-		userPasswordDbname := mysqlUser + ":" + mysqlUserPwd + "@/" + mysqlDatabase
-		db, err := sql.Open("mysql", userPasswordDbname)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		defer db.Close()
+		//godotenv.Load(".env")
+		//mysqlUser := os.Getenv("mysqlUser")
+		//mysqlUserPwd := os.Getenv("mysqlUserPwd")
+		//mysqlDatabase := os.Getenv("mysqlDatabase")
+		//userPasswordDbname := mysqlUser + ":" + mysqlUserPwd + "@/" + mysqlDatabase
+		//db, err := sql.Open("mysql", userPasswordDbname)
+		//if err != nil {
+		//	w.WriteHeader(http.StatusInternalServerError)
+		//	return
+		//}
+		//defer db.Close()
 		_, err = db.Exec("DELETE FROM contribution_list WHERE id=?", id)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)

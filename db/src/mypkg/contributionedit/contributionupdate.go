@@ -1,14 +1,11 @@
 package contributionedit
 
 import (
-	"database/sql"
 	"encoding/json"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 )
 
@@ -42,17 +39,17 @@ func Contributionupdate(w http.ResponseWriter, r *http.Request) {
 
 		//TODO pointの制約
 
-		godotenv.Load(".env")
-		mysqlUser := os.Getenv("mysqlUser")
-		mysqlUserPwd := os.Getenv("mysqlUserPwd")
-		mysqlDatabase := os.Getenv("mysqlDatabase")
-		userPasswordDbname := mysqlUser + ":" + mysqlUserPwd + "@/" + mysqlDatabase
-		db, err := sql.Open("mysql", userPasswordDbname)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		defer db.Close()
+		//godotenv.Load(".env")
+		//mysqlUser := os.Getenv("mysqlUser")
+		//mysqlUserPwd := os.Getenv("mysqlUserPwd")
+		//mysqlDatabase := os.Getenv("mysqlDatabase")
+		//userPasswordDbname := mysqlUser + ":" + mysqlUserPwd + "@/" + mysqlDatabase
+		//db, err := sql.Open("mysql", userPasswordDbname)
+		//if err != nil {
+		//	w.WriteHeader(http.StatusInternalServerError)
+		//	return
+		//}
+		//defer db.Close()
 
 		_, err = db.Exec("UPDATE contribution_list SET contributorid=?, point=?, message=? WHERE id=?", contributorId, strconv.Itoa(point), message, id)
 		if err != nil {
