@@ -45,8 +45,9 @@ func Userupdate(w http.ResponseWriter, r *http.Request) {
 		body, err := io.ReadAll(r.Body)
 		log.Println(body)
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
 			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+
 			return
 		}
 		keyVal1 := make(map[string]string)
@@ -55,6 +56,7 @@ func Userupdate(w http.ResponseWriter, r *http.Request) {
 		name := keyVal1["name"]
 
 		if err != nil {
+			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -69,12 +71,15 @@ func Userupdate(w http.ResponseWriter, r *http.Request) {
 		db, err := sql.Open("mysql", userPasswordDbname)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			log.Println(body)
+			log.Println(err)
 			return
 		}
 		defer db.Close()
 
 		_, err = db.Exec("UPDATE name_list SET name=? WHERE nameid=?", name, nameid)
 		if err != nil {
+			log.Println(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
