@@ -8,7 +8,6 @@ import (
 	"db/mypkg/ranking"
 	"db/mypkg/useredit"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
