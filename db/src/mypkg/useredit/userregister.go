@@ -40,19 +40,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//godotenv.Load(".env")
-		//mysqlUser := os.Getenv("mysqlUser")
-		//mysqlUserPwd := os.Getenv("mysqlUserPwd")
-		//mysqlHost := os.Getenv("mysqlUserHost")
-		//mysqlDatabase := os.Getenv("mysqlDatabase")
-		//userPasswordDbname := mysqlUser + ":" + mysqlUserPwd + "@" + mysqlHost + "/" + mysqlDatabase
-		//db, err := sql.Open("mysql", userPasswordDbname)
-		//if err != nil {
-		//	w.WriteHeader(http.StatusInternalServerError)
-		//	return
-		//}
-		//defer db.Close()
-
 		_, err = db.Exec("INSERT INTO name_list (nameid, name, deleted_at) VALUES(?, ?, false)", nameid.String(), name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)

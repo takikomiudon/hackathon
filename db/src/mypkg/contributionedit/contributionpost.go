@@ -62,8 +62,6 @@ func Contributionpost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//TODO pointの制約
-
 		jst, err := time.LoadLocation("Asia/Tokyo")
 		if err != nil {
 			panic(err)

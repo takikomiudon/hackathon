@@ -11,11 +11,6 @@ import (
 	"os"
 )
 
-//type Users struct {
-//	NameId string
-//	Name   string
-//}
-
 var db *sql.DB
 
 func init() {

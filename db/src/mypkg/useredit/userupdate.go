@@ -60,21 +60,6 @@ func Userupdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//TODO pointの制約
-
-		//mysqlUser := os.Getenv("mysqlUser")
-		//mysqlUserPwd := os.Getenv("mysqlUserPwd")
-		//mysqlDatabase := os.Getenv("mysqlDatabase")
-		//userPasswordDbname := mysqlUser + ":" + mysqlUserPwd + "@/" + mysqlDatabase
-		//db, err := sql.Open("mysql", userPasswordDbname)
-		//if err != nil {
-		//	w.WriteHeader(http.StatusInternalServerError)
-		//	log.Println(body)
-		//	log.Println(err)
-		//	return
-		//}
-		//defer db.Close()
-
 		_, err = db.Exec("UPDATE name_list SET name=? WHERE nameid=?", name, nameid)
 		if err != nil {
 			log.Println(err)

@@ -32,19 +32,6 @@ func Contributiondelete(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//TODO pointの制約
-
-		//godotenv.Load(".env")
-		//mysqlUser := os.Getenv("mysqlUser")
-		//mysqlUserPwd := os.Getenv("mysqlUserPwd")
-		//mysqlDatabase := os.Getenv("mysqlDatabase")
-		//userPasswordDbname := mysqlUser + ":" + mysqlUserPwd + "@/" + mysqlDatabase
-		//db, err := sql.Open("mysql", userPasswordDbname)
-		//if err != nil {
-		//	w.WriteHeader(http.StatusInternalServerError)
-		//	return
-		//}
-		//defer db.Close()
 		_, err = db.Exec("DELETE FROM contribution_list WHERE id=?", id)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
