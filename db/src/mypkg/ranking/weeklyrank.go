@@ -18,7 +18,7 @@ func Weeklyrank(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodGet:
-		rows, err := db.Query("SELECT name, SUM(point) FROM contribution_list JOIN name_list ON contribution_list.contributorid=name_list.nameid WHERE week(time,3) = week(now(),3) GROUP BY contributorid ORDER BY SUM(point) DESC;")
+		rows, err := db.Query("SELECT name, SUM(point) FROM contribution_list JOIN name_list ON contribution_list.contributorid=name_list.nameid WHERE week(time,3) = week(now(),3) AND NOT deleted_at GROUP BY contributorid ORDER BY SUM(point) DESC;")
 		if err != nil {
 			log.Printf("fail: db.Query, %v\n", err)
 			w.WriteHeader(http.StatusInternalServerError)
