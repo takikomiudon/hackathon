@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"net/http"
