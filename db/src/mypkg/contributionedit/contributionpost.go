@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 	"github.com/oklog/ulid/v2"
 	"io"
 	"log"
@@ -19,7 +18,7 @@ import (
 var db *sql.DB
 
 func init() {
-	godotenv.Load(".env")
+	//godotenv.Load(".env")
 	mysqlUser := os.Getenv("mysqlUser")
 	mysqlUserPwd := os.Getenv("mysqlUserPwd")
 	mysqlHost := os.Getenv("mysqlHost")
