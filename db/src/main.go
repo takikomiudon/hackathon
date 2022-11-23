@@ -3,6 +3,10 @@ package main
 import (
 	"database/sql"
 	"db/mypkg"
+	"db/mypkg/contributionedit"
+	"db/mypkg/contributionlist"
+	"db/mypkg/ranking"
+	"db/mypkg/useredit"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
@@ -32,27 +36,28 @@ func init() {
 }
 
 func main() {
-	http.HandleFunc("/alltimeranking", mypkg.Alltimerank)
-	http.HandleFunc("/annualranking", mypkg.Annualrank)
-	http.HandleFunc("/monthlyranking", mypkg.Monthlyrank)
-	http.HandleFunc("/weeklyranking", mypkg.Weeklyrank)
-	http.HandleFunc("/dailyranking", mypkg.Dailyrank)
-	http.HandleFunc("/mycontribution", mypkg.Mycontribution)
-	http.HandleFunc("/mycontributed", mypkg.Mycontributed)
-	http.HandleFunc("/register", mypkg.Register)
+	http.HandleFunc("/alltimeranking", ranking.Alltimerank)
+	http.HandleFunc("/annualranking", ranking.Annualrank)
+	http.HandleFunc("/monthlyranking", ranking.Monthlyrank)
+	http.HandleFunc("/weeklyranking", ranking.Weeklyrank)
+	http.HandleFunc("/dailyranking", ranking.Dailyrank)
+	http.HandleFunc("/mycontribution", contributionlist.Mycontribution)
+	http.HandleFunc("/mycontributed", contributionlist.Mycontributed)
+	http.HandleFunc("/register", useredit.Register)
 	http.HandleFunc("/login", mypkg.Login)
-	http.HandleFunc("/contributionpost", mypkg.Contributionpost)
-	http.HandleFunc("/contributiondelete", mypkg.Contributiondelete)
-	http.HandleFunc("/contributionupdate", mypkg.Contributionupdate)
+	http.HandleFunc("/contributionpost", contributionedit.Contributionpost)
+	http.HandleFunc("/contributiondelete", contributionedit.Contributiondelete)
+	http.HandleFunc("/contributionupdate", contributionedit.Contributionupdate)
 	http.HandleFunc("/home", mypkg.Home)
-	http.HandleFunc("/userdelete", mypkg.Userdelete)
-	http.HandleFunc("/userupdate", mypkg.Userupdate)
-	http.HandleFunc("/allcontribution", mypkg.Allcontribution)
+	http.HandleFunc("/userdelete", useredit.Userdelete)
+	http.HandleFunc("/userupdate", useredit.Userupdate)
+	http.HandleFunc("/allcontribution", contributionlist.Allcontribution)
+	http.HandleFunc("/contributorlist", mypkg.ContributorList)
 
 	closeDBWithSysCall()
 
 	log.Println("Listening...")
-	if err := http.ListenAndServe(":8000", nil); err != nil {
+	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
 }

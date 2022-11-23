@@ -1,18 +1,42 @@
 package mypkg
 
 import (
+	"database/sql"
 	"encoding/json"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"net/url"
+	"os"
 )
 
-type Users struct {
-	NameId string
-	Name   string
+//type Users struct {
+//	NameId string
+//	Name   string
+//}
+
+var db *sql.DB
+
+func init() {
+	godotenv.Load(".env")
+	mysqlUser := os.Getenv("mysqlUser")
+	mysqlUserPwd := os.Getenv("mysqlUserPwd")
+	mysqlHost := os.Getenv("mysqlHost")
+	mysqlDatabase := os.Getenv("mysqlDatabase")
+	_db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", mysqlUser, mysqlUserPwd, mysqlHost, mysqlDatabase))
+	if err != nil {
+		log.Fatalf("fail: sql.Open, %v\n", err)
+	}
+
+	if err := _db.Ping(); err != nil {
+		log.Fatalf("fail: _db.Ping, %v\n", err)
+	}
+	db = _db
 }
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func ContributorList(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
@@ -23,7 +47,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodGet:
-		rows, err := db.Query("SELECT nameid, name FROM name_list WHERE NOT deleted_at;")
+		m, _ := url.ParseQuery(r.URL.RawQuery)
+		nameid := m["nameid"][0]
+		if nameid == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		rows, err := db.Query("SELECT nameid, name FROM name_list WHERE NOT deleted_at AND nameid!=?;", nameid)
 		if err != nil {
 			log.Printf("fail: db.Query, %v\n", err)
 			w.WriteHeader(http.StatusInternalServerError)
