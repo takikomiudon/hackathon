@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"net/http"
@@ -15,7 +14,7 @@ import (
 var db *sql.DB
 
 func init() {
-	godotenv.Load(".env")
+	//godotenv.Load(".env")
 	mysqlUser := os.Getenv("mysqlUser")
 	mysqlUserPwd := os.Getenv("mysqlUserPwd")
 	mysqlHost := os.Getenv("mysqlHost")
@@ -62,8 +61,7 @@ func Userupdate(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//TODO pointの制約
-
-		godotenv.Load(".env")
+		
 		mysqlUser := os.Getenv("mysqlUser")
 		mysqlUserPwd := os.Getenv("mysqlUserPwd")
 		mysqlDatabase := os.Getenv("mysqlDatabase")
